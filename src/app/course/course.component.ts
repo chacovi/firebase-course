@@ -1,9 +1,8 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Course} from '../model/course';
-import {tap} from 'rxjs/operators';
-import {Observable} from 'rxjs';
 import {Lesson} from '../model/lesson';
+import {CoursesService} from '../services/courses.service';
 
 
 @Component({
@@ -15,25 +14,23 @@ export class CourseComponent implements OnInit {
 
   course: Course;
 
+  lessons: Lesson[];
+
   displayedColumns = ['seqNo', 'description', 'duration'];
 
 
-  constructor(
-    private route: ActivatedRoute) {
-
-
+  constructor(private route: ActivatedRoute, private courseService: CoursesService) {
   }
 
   ngOnInit() {
-
     this.course = this.route.snapshot.data['course'];
-
-
-
+    this.courseService.findLessons(this.course.id)
+      .subscribe(
+        lessons => this.lessons = lessons
+      );
   }
 
   loadMore() {
-
   }
 
 
