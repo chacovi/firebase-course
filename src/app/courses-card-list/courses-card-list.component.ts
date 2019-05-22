@@ -1,37 +1,45 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {Course} from "../model/course";
-import {MatDialog, MatDialogConfig} from "@angular/material";
-import {CourseDialogComponent} from "../course-dialog/course-dialog.component";
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {Course} from '../model/course';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
 
 @Component({
-    selector: 'courses-card-list',
-    templateUrl: './courses-card-list.component.html',
-    styleUrls: ['./courses-card-list.component.css']
+  selector: 'courses-card-list',
+  templateUrl: './courses-card-list.component.html',
+  styleUrls: ['./courses-card-list.component.css']
 })
 export class CoursesCardListComponent implements OnInit {
 
-    @Input()
-    courses: Course[];
+  @Input()
+  courses: Course[];
 
-    constructor(private dialog: MatDialog) {
-    }
+  courseEdited = new EventEmitter();
 
-    ngOnInit() {
+  constructor(private dialog: MatDialog) {
+  }
 
-    }
+  ngOnInit() {
 
-    editCourse(course:Course) {
+  }
 
-        const dialogConfig = new MatDialogConfig();
+  editCourse(course: Course) {
 
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
+    const dialogConfig = new MatDialogConfig();
 
-        dialogConfig.data = course;
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
 
-        this.dialog.open(CourseDialogComponent, dialogConfig);
+    dialogConfig.data = course;
 
-    }
+    this.dialog.open(CourseDialogComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(val => {
+        if (val) {
+          this.courseEdited.emit();
+        }
+      });
+
+  }
 
 }
 

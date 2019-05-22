@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {first, map} from 'rxjs/operators';
 import {Course} from '../model/course';
-import {Observable} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {convertSnaps} from './db-utils';
 import {Lesson} from '../model/lesson';
 import OrderByDirection = firebase.firestore.OrderByDirection;
@@ -13,6 +13,10 @@ import OrderByDirection = firebase.firestore.OrderByDirection;
 export class CoursesService {
 
   constructor(private db: AngularFirestore) {
+  }
+
+  saveCourse(courseId: string, changes: Partial<Course>): Observable<any> {
+    return from(this.db.doc(`courses/${courseId}`).update(changes));
   }
 
   loadAllCourses(): Observable<Course[]> {
@@ -45,4 +49,5 @@ export class CoursesService {
         first()
       );
   }
+
 }

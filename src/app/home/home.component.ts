@@ -20,6 +20,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
+    this.reloadCourse();
+  }
+
+  reloadCourse() {
     this.courses$ = this.coursesService.loadAllCourses();
 
     this.beginnersCourses$ = this.courses$
@@ -28,5 +32,4 @@ export class HomeComponent implements OnInit {
     this.advancedCourses$ = this.courses$
       .pipe(map(courses => courses.filter(course => course.categories.includes('ADVANCED'))));
   }
-
 }
