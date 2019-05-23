@@ -3,7 +3,13 @@
   border-radius: 4px;
 }
 
-
 .about {
-  padding: 40px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  padding: 1rem;
+}
+
+button {
+  margin: 1rem;
 }
